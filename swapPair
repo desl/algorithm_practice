@@ -1,0 +1,60 @@
+// Write a function called swapPair which accepts two arrays of integers. The function should return true if you only need one swap to give the two arrays the same sum. 
+
+// If this can not be done with one swap, the function should return false. You can assume that each array passed to the function will have different values than the other. 
+
+// swapPair([4,1,2,1,1,2], [3,6,3,3]) // true
+// swapPair([7,5,6,4], [8,1,3,2]) // true
+// swapPair([4,5,6,1],[10]) // false
+// swapPair([20,30,40],[1,2,3,4]) // false
+
+// Solve this problem with the following constraints:
+
+// Time Complexity - Better than O(n^2)
+
+// https://repl.it/student/submissions/1247634
+
+function swapPair(arr1,arr2){
+    const sumArr = (arr) => arr.reduce((acc,cur)=> acc+=cur);
+    var [s1,s2] = [sumArr(arr1), sumArr(arr2)]
+    var set2 = new Set(arr2);
+
+    if (s2 > s1) [s1,s2] = [s2,s1];
+    var diff = (s1-s2)/2;
+
+    for (let i in arr1){
+        if (set2.has(arr1[i]+diff)){
+            return true;
+        }
+    }
+    return false;
+}
+
+// swapPair([4,1,2,1,1,2], [3,6,3,3]) // true 4 & 6; (11,15);
+// swapPair([6,1,2,1,1,2], [3,4,3,3]) // true 4 & 6;
+
+// swapPair([7,5,6,4], [8,1,3,2]) // true 1 & 5 (22,14)
+// swapPair([7,1,6,4], [8,5,3,2]) // true 1 & 5
+// swapPair([4,5,6,1],[10]) // false
+swapPair([20,30,40],[1,2,3,4]) // false
+// swapPair([1,2,3,4],[1,5,2,2]) // true
+
+
+// O(n^2) solution:
+
+// function swapPair(arr1,arr2){
+//     const sumArr = (arr) => arr.reduce((acc,cur)=> acc+=cur);
+//     var sum1 = sumArr(arr1);
+
+//     let ptr = 0;
+//     while (ptr < arr1.length){
+//         for (let i=0; i<arr2.length; i++){
+//             let c1 = arr1.slice();
+//             let c2 = arr2.slice();
+//             let s1 = sumArr(c1) -c1[ptr] + c2[i];
+//             let s2 = sumArr(c2) -c2[i] + c1[ptr];
+//             if (s1 === s2) return true;
+//         }
+//         ptr ++;
+//     }
+//     return false;
+// }
