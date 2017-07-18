@@ -11,7 +11,7 @@ function numberUniques(arr){
 
 // or
 
-// const numberUniques = (arr) => (arr.reduce((acc,cur, idx) => arr[idx+1] && cur !== arr[idx+1]? acc+1 : acc ,0) + (arr[arr.length-2] !== arr[arr.length-1] ? 1 : 0))
+// const numberUniques = (arr) => arr.reduce((acc, cur, i) => arr[i+1] && cur !== arr[i+1]? ++acc : acc ,1)
 
 numberUniques([1,1,1,2,2,3,3,4,5]) // 5
 numberUniques([1,2,2,3,4]) // 4
