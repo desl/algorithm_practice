@@ -3,7 +3,7 @@ FILE="automatic.js"
 FILE_CONTENT=`cat $FILE`
 DATE=`date +%Y-%m-%d:%H:%M:%S`;
 
-echo $FILE_CONTENT | sed s/\".*\"/\"$DATE\"/ > algorithm_practice/automatic.js
+echo $FILE_CONTENT | sed s/\".*\"/\"$DATE\"/ > $FILE
 
 git add $FILE;
 git commit -m "updated date"
