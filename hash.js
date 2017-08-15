@@ -84,36 +84,31 @@ class HashTable {
   // Amortized Time Complexity (amortized):  O(N) for the number of elements inthe hash bucket
   // Auxiliary Space Complexity (amortized): O(N) for size of key + value
   insert(key, value, resizeFlag) {
+
     resizeFlag = resizeFlag || false;
+    
+    let indexes = this.get(key, true);
 
-    if (this.get(key) === null){
-      let bucketIdx = this.hash(key, this.buckets);
-      this.storage[bucketIdx].push([key,value]);
-      if (resizeFlag !== true) this.size ++;
-    } else{
-      let bucketIdx = this.hash(key,this.buckets);
-      let i=0;
-
-      while (this.storage[bucketIdx][i][0] !== key && i < this.storage[bucketIdx].length){
-      i++;
-      }
-      this.storage[bucketIdx][i][1] = value;
-    }
-
-    if (resizeFlag !== true){
-      this.resize();
+    if (indexes === null){
+        let bucketIdx = this.hash(key,this.buckets);
+        this.storage[bucketIdx].push([key,value]);
+        
+        if (resizeFlag !== true){
+            this.size++;
+            this.resize();
+        } 
+    } else {
+        this.storage[indexes[0]][indexes[1]][1] = value;
     }
   }
 
   // Time Complexity: O(N) for size of hash bucket
   // Auxiliary Space Complexity: constant space
-  get(key) {
-    // get idx for bucket
-    // iterate through storeKeys for idx within bucket
-    // retreive value in storage at those indexes.
+  get(key, returnIdx) {
     let bucketIdx = this.hash(key,this.buckets);
-    let i=0;
     if (this.storage[bucketIdx].length === 0) return null;
+    
+    let i=0;
 
     while (i < this.storage[bucketIdx].length && this.storage[bucketIdx][i][0] !== key){
       i++;
@@ -122,8 +117,7 @@ class HashTable {
     if (i === this.storage[bucketIdx].length) {
       return null;
     }
-    return this.storage[bucketIdx][i][1];
-
+    return returnIdx === true ? [bucketIdx,i] : this.storage[bucketIdx][i][1];
 
   }
 
