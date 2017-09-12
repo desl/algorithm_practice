@@ -1,0 +1,74 @@
+let graph = [ // true (does not contain a cycle)
+    [1,2,3], // 0
+    [0],     // 1
+    [0],     // 2
+    [0,4],   // 3
+    [3]      // 4
+  ];
+  
+  let graphTwo = [ // false (does contain a cycle)
+    [1,2,3], // 0
+    [0, 2],  // 1
+    [0, 1],  // 2
+    [0,4],   // 3
+    [3]      // 4
+  ];
+  
+  let graphThree = [ // false (orphanned node)
+    [1,2,3], // 0
+    [0],     // 1
+    [0],     // 2
+    [0,4],   // 3
+    [3],     // 4
+    []       // 5
+  ]
+  
+  // BFS make sure any node's edges connect to either it's "parent" or "children"
+  // looking for exactly 1 parent, and no edges connecting to siblings
+  
+  // in Array of result, make sure it is the same length as graph (catch orphanned nodes);
+  
+  function isTree(graph){
+    let distance = {0:0};
+    let queue = [0];
+    let visited = new Set([0]);
+
+    while (queue.length > 0){
+      let c = queue.shift(); // c = current Node
+      let cDis = distance[c]; // current Distance (from the parent);
+      visited.add(c);
+      
+      let above = 0;
+
+      for (let i=0; i < graph[c].length; i++){
+        let child = graph[c][i];
+        
+        if (!visited.has(child)){
+          distance[child] = cDis + 1;
+          // console.log("visited does not have", child, "adding distance[child]", cDis+1);
+          queue.push(child);
+        }
+        
+        if (distance[child] < cDis){
+          // console.log("Above distance[child]", distance[child], "cDis", cDis);
+          above++;
+        } else if (distance[child] === cDis){
+          // console.log("comparing: distance[child]", distance[child], "and cDis",cDis);
+          return false;
+        }
+      }
+      if (above > 1) return false;
+    }
+    // check that visited nodes is the same as nodes in the entire graph
+    // to detect orphanned verticies
+    if (graph.length !== visited.size){
+      return false;
+    } 
+    
+    return true;
+  }
+  
+  console.log(isTree(graph), "Should be true");
+  console.log(isTree(graphTwo), "Should be false");
+  console.log(isTree(graphThree), "Should be false");
+  // isTree(graphTwo);
